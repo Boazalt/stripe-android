@@ -83,6 +83,13 @@ internal open class FakeCustomerRepository(
         return onUpdatePaymentMethod()
     }
 
+    override suspend fun setDefaultPaymentMethod(
+        customerInfo: CustomerRepository.CustomerInfo,
+        paymentMethodId: String?
+    ): Result<Customer> {
+        TODO("Not yet implemented")
+    }
+
     data class DetachRequest(
         val paymentMethodId: String,
         val customerInfo: CustomerRepository.CustomerInfo,

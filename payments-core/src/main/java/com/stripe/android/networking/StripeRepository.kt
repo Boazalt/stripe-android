@@ -131,6 +131,13 @@ interface StripeRepository {
     ): Result<PaymentMethod>
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    suspend fun setDefaultPaymentMethod(
+        customerId: String,
+        paymentMethodId: String?,
+        options: ApiRequest.Options,
+    ): Result<Customer>
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     suspend fun createToken(
         tokenParams: TokenParams,
         options: ApiRequest.Options
