@@ -513,7 +513,7 @@ internal fun PartnerAuthDrawerPreview(
     state: SharedPartnerAuthState
 ) {
     FinancialConnectionsPreview {
-        Box(modifier = Modifier.background(Color.White)) {
+        Box(modifier = Modifier.background(colors.background)) {
             SharedPartnerAuthContent(
                 state = state,
                 inModal = true,
