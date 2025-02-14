@@ -2153,7 +2153,9 @@ class StripeApiRepository @JvmOverloads internal constructor(
             return getApiUrl("payment_methods/$paymentMethodId")
         }
 
-        // TODO: add javadoc.
+        /**
+         * @return `https://api.stripe.com/v1/elements/customers/:customerId/set_default_payment_method`
+         */
         internal fun getSetDefaultPaymentMethodUrl(
             customerId: String,
         ): String {

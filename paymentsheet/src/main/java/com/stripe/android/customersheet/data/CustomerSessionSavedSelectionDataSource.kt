@@ -34,44 +34,43 @@ internal class CustomerSessionSavedSelectionDataSource @Inject constructor(
 
     override suspend fun setSavedSelection(selection: SavedSelection?): CustomerSheetDataResult<Unit> {
         return withContext(workContext) {
-            elementsSessionManager.fetchElementsSession().fold(onSuccess = { elementsSession ->
+            elementsSessionManager.fetchElementsSession().mapCatching { elementsSession ->
                 if (getDefaultPaymentMethodsEnabledForCustomerSheet(elementsSession.elementsSession)) {
                    saveSelectionToBackend(elementsSession, selection)
                 } else {
                     saveSelectionToPrefs(selection)
                 }
-            }, onFailure = { cause ->
-                CustomerSheetDataResult.failure(cause, displayMessage = null)
-            })
+            }.toCustomerSheetDataResult()
         }
     }
 
     private suspend fun CustomerSessionSavedSelectionDataSource.saveSelectionToPrefs(
         selection: SavedSelection?
-    ) = createPrefsRepository().mapCatching { prefsRepository ->
-        val result = prefsRepository.setSavedSelection(selection)
+    ) {
+        createPrefsRepository().mapCatching { prefsRepository ->
+            val result = prefsRepository.setSavedSelection(selection)
 
-        if (!result) {
-            throw IOException("Unable to persist payment option $selection")
+            if (!result) {
+                throw IOException("Unable to persist payment option $selection")
+            }
         }
     }
 
     private suspend fun saveSelectionToBackend(
         elementsSession: CustomerSessionElementsSession,
         selection: SavedSelection?
-    ): CustomerSheetDataResult<Unit> {
+    ) {
         val ephemeralKey = elementsSession.ephemeralKey
         val paymentMethodId = (selection as? SavedSelection.PaymentMethod)?.id
-        return customerRepository.setDefaultPaymentMethod(
+        customerRepository.setDefaultPaymentMethod(
             paymentMethodId = paymentMethodId,
             customerInfo = CustomerRepository.CustomerInfo(
                 id = ephemeralKey.customerId,
                 ephemeralKeySecret = ephemeralKey.ephemeralKey,
                 customerSessionClientSecret = ephemeralKey.customerSessionClientSecret,
             )
-        ).map { }.toCustomerSheetDataResult()
+        ).getOrThrow()
     }
-
 
     private suspend fun createPrefsRepository(): CustomerSheetDataResult<PrefsRepository> {
         return elementsSessionManager.fetchCustomerSessionEphemeralKey().mapCatching { ephemeralKey ->
