@@ -176,13 +176,13 @@ internal class CustomerApiRepository @Inject constructor(
         customerInfo: CustomerRepository.CustomerInfo,
         paymentMethodId: String?
     ): Result<Customer> = stripeRepository.setDefaultPaymentMethod(
-            paymentMethodId = paymentMethodId,
-            customerId = customerInfo.id,
-            options = ApiRequest.Options(
-                apiKey = customerInfo.ephemeralKeySecret,
-                stripeAccount = lazyPaymentConfig.get().stripeAccountId,
-            )
+        paymentMethodId = paymentMethodId,
+        customerId = customerInfo.id,
+        options = ApiRequest.Options(
+            apiKey = customerInfo.ephemeralKeySecret,
+            stripeAccount = lazyPaymentConfig.get().stripeAccountId,
         )
+    )
 
     private fun filterPaymentMethods(allPaymentMethods: List<PaymentMethod>): List<PaymentMethod> {
         val paymentMethods = mutableListOf<PaymentMethod>()

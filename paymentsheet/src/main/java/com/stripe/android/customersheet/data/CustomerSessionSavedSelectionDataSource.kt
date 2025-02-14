@@ -36,7 +36,7 @@ internal class CustomerSessionSavedSelectionDataSource @Inject constructor(
         return withContext(workContext) {
             elementsSessionManager.fetchElementsSession().mapCatching { elementsSession ->
                 if (getDefaultPaymentMethodsEnabledForCustomerSheet(elementsSession.elementsSession)) {
-                   saveSelectionToBackend(elementsSession, selection)
+                    saveSelectionToBackend(elementsSession, selection)
                 } else {
                     saveSelectionToPrefs(selection)
                 }

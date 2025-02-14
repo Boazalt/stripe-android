@@ -38,7 +38,7 @@ internal open class FakeCustomerRepository(
     val updateRequests: ReceiveTurbine<UpdateRequest> = _updateRequests
 
     private val _setDefaultPaymentMethodRequests = Turbine<SetDefaultRequest>()
-    private val setDefaultPaymentMethodRequests: ReceiveTurbine<SetDefaultRequest> = _setDefaultPaymentMethodRequests
+    val setDefaultPaymentMethodRequests: ReceiveTurbine<SetDefaultRequest> = _setDefaultPaymentMethodRequests
 
     var error: Throwable? = null
 

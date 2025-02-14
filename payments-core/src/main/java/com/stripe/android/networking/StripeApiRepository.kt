@@ -614,7 +614,7 @@ class StripeApiRepository @JvmOverloads internal constructor(
             apiRequest = apiRequestFactory.createPost(
                 url = getSetDefaultPaymentMethodUrl(customerId = customerId),
                 options = options,
-                params = mapOf("payment_method" to paymentMethodId)
+                params = mapOf("payment_method" to (paymentMethodId ?: ""))
             ),
             jsonParser = CustomerJsonParser()
         )
@@ -2156,6 +2156,7 @@ class StripeApiRepository @JvmOverloads internal constructor(
         /**
          * @return `https://api.stripe.com/v1/elements/customers/:customerId/set_default_payment_method`
          */
+        @VisibleForTesting
         internal fun getSetDefaultPaymentMethodUrl(
             customerId: String,
         ): String {
