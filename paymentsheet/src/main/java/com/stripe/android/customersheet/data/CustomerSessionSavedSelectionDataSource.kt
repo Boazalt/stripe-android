@@ -44,7 +44,7 @@ internal class CustomerSessionSavedSelectionDataSource @Inject constructor(
         }
     }
 
-    private suspend fun CustomerSessionSavedSelectionDataSource.saveSelectionToPrefs(
+    private suspend fun saveSelectionToPrefs(
         selection: SavedSelection?
     ) {
         createPrefsRepository().mapCatching { prefsRepository ->
